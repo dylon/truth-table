@@ -84,33 +84,76 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
   var params = record.params();
-  var expression = $$[$0-1];
-  var fn = new Function(params, "return " + expression + ";");
+  var js = $$[$0-1].js;
+  var tex = $$[$0-1].tex;
+  var fn = new Function(params, "return " + js + ";");
   return {
     params: params,
-    expression: $$[$0-1],
+    js: js,
+    tex: tex,
     fn: fn
   };
 
 break;
-case 2: this.$ = "(" + $$[$0-4] + ") && (" + $$[$0-1] + ")"; 
+case 2:
+    this.$ = {
+      js: "(" + $$[$0-4].js + ") && (" + $$[$0-1].js + ")",
+      tex: "\\left(" + $$[$0-4].tex + "\\right) \\land \\left(" + $$[$0-1].tex + "\\right)"
+    };
+  
 break;
-case 3: this.$ = "(" + $$[$0-2] + ") && " + $$[$0]; 
+case 3:
+    this.$ = {
+      js: "(" + $$[$0-2].js + ") && " + $$[$0].js,
+      tex: "\\left(" + $$[$0-2].tex + "\\right) \\land " + $$[$0].tex
+    };
+  
 break;
-case 4: this.$ = "(" + $$[$0-1] + ")"; 
+case 4:
+    this.$ = {
+      js: "(" + $$[$0-1].js + ")",
+      tex: "\\left(" + $$[$0-1].tex + "\\right)"
+    };
+  
 break;
-case 5: this.$ = $$[$0-2] + " || " + $$[$0]; 
+case 5:
+    this.$ = {
+      js: $$[$0-2].js + " || " + $$[$0].js,
+      tex: $$[$0-2].tex + " \\lor " + $$[$0].tex
+    };
+  
 break;
-case 6: this.$ = $$[$0-2] + " && " + $$[$0]; 
+case 6:
+    this.$ = {
+      js: $$[$0-2].js + " && " + $$[$0].js,
+      tex: $$[$0-2].tex + " \\land " + $$[$0].tex
+    };
+  
 break;
-case 7: this.$ = "!" + $$[$0]; 
+case 7:
+    this.$ = {
+      js: "!" + $$[$0].js,
+      tex: "\\lnot " + $$[$0].tex
+    };
+  
 break;
-case 8: this.$ = $$[$0-1] + " && " + $$[$0]; 
+case 8:
+    this.$ = {
+      js: $$[$0-1].js + " && " + $$[$0].js,
+      tex: $$[$0-1].tex + " \\land " + $$[$0].tex
+    };
+  
 break;
-case 9: this.$ = $$[$0]; 
+case 9:
+    this.$ = $$[$0];
+  
 break;
 case 10:
-  this.$ = record.param($$[$0]);
+  var x = record.param($$[$0]);
+  this.$ = {
+    js: x,
+    tex: x
+  };
 
 break;
 }

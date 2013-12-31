@@ -25,28 +25,71 @@
 
 statement: expression EOF %{
   var params = record.params();
-  var expression = $1;
-  var fn = new Function(params, "return " + expression + ";");
+  var js = $1.js;
+  var tex = $1.tex;
+  var fn = new Function(params, "return " + js + ";");
   return {
     params: params,
-    expression: $1,
+    js: js,
+    tex: tex,
     fn: fn
   };
 %};
 
 expression:
-  "(" expression ")" "(" expression ")"    { $$ = "(" + $2 + ") && (" + $5 + ")"; }
-  | "(" expression ")" identifier          { $$ = "(" + $2 + ") && " + $4; }
-  | "(" expression ")"                     { $$ = "(" + $2 + ")"; }
-  | expression "+" expression              { $$ = $1 + " || " + $3; }
-  | expression "*" expression              { $$ = $1 + " && " + $3; }
-  | "!" expression                         { $$ = "!" + $2; }
-  | identifier expression                  { $$ = $1 + " && " + $2; }
-  | identifier                             { $$ = $1; }
+  "(" expression ")" "(" expression ")" {
+    $$ = {
+      js: "(" + $2.js + ") && (" + $5.js + ")",
+      tex: "\\left(" + $2.tex + "\\right) \\land \\left(" + $5.tex + "\\right)"
+    };
+  }
+  | "(" expression ")" identifier {
+    $$ = {
+      js: "(" + $2.js + ") && " + $4.js,
+      tex: "\\left(" + $2.tex + "\\right) \\land " + $4.tex
+    };
+  }
+  | "(" expression ")" {
+    $$ = {
+      js: "(" + $2.js + ")",
+      tex: "\\left(" + $2.tex + "\\right)"
+    };
+  }
+  | expression "+" expression {
+    $$ = {
+      js: $1.js + " || " + $3.js,
+      tex: $1.tex + " \\lor " + $3.tex
+    };
+  }
+  | expression "*" expression {
+    $$ = {
+      js: $1.js + " && " + $3.js,
+      tex: $1.tex + " \\land " + $3.tex
+    };
+  }
+  | "!" expression {
+    $$ = {
+      js: "!" + $2.js,
+      tex: "\\lnot " + $2.tex
+    };
+  }
+  | identifier expression {
+    $$ = {
+      js: $1.js + " && " + $2.js,
+      tex: $1.tex + " \\land " + $2.tex
+    };
+  }
+  | identifier {
+    $$ = $1;
+  }
   ;
 
 identifier: IDENTIFIER %{
-  $$ = record.param($1);
+  var x = record.param($1);
+  $$ = {
+    js: x,
+    tex: x
+  };
 %};
 
 %%
