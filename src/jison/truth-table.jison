@@ -23,18 +23,33 @@
 
 %%
 
-statement: expression EOF %{
-  var params = record.params();
-  var js = $1.js;
-  var tex = $1.tex;
-  var fn = new Function(params, "return " + js + ";");
-  return {
-    params: params,
-    js: js,
-    tex: tex,
-    fn: fn
-  };
-%};
+statement: /* ϵ */ EOF %{
+    // If an exception is thrown, then you may want to parse an empty string to
+    // reset the state of the record variable.  Otherwise, you may find
+    // successive calls to #parse return more variables then were in your
+    // expression (residue of previous expressions).
+    record._params = {};
+    return {
+      params: [],
+      js: '',
+      tex: '',
+      fn: function() { return true; }
+    };
+  %}
+  | expression EOF %{
+    var params = record.params();
+    var js = $1.js;
+    var tex = $1.tex;
+    var fn = new Function(params, "return " + js + ";");
+    record._params = {};
+    return {
+      params: params,
+      js: js,
+      tex: tex,
+      fn: fn
+    };
+  %}
+  ;
 
 expression:
   "(" expression ")" "(" expression ")" {

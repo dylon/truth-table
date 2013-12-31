@@ -74,81 +74,96 @@
 var truthTable = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"statement":3,"expression":4,"EOF":5,"(":6,")":7,"identifier":8,"+":9,"*":10,"!":11,"IDENTIFIER":12,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",6:"(",7:")",9:"+",10:"*",11:"!",12:"IDENTIFIER"},
-productions_: [0,[3,2],[4,6],[4,4],[4,3],[4,3],[4,3],[4,2],[4,2],[4,1],[8,1]],
+symbols_: {"error":2,"statement":3,"EOF":4,"expression":5,"(":6,")":7,"identifier":8,"+":9,"*":10,"!":11,"IDENTIFIER":12,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"EOF",6:"(",7:")",9:"+",10:"*",11:"!",12:"IDENTIFIER"},
+productions_: [0,[3,1],[3,2],[5,6],[5,4],[5,3],[5,3],[5,3],[5,2],[5,2],[5,1],[8,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-  var params = record.params();
-  var js = $$[$0-1].js;
-  var tex = $$[$0-1].tex;
-  var fn = new Function(params, "return " + js + ";");
-  return {
-    params: params,
-    js: js,
-    tex: tex,
-    fn: fn
-  };
-
+    // If an exception is thrown, then you may want to parse an empty string to
+    // reset the state of the record variable.  Otherwise, you may find
+    // successive calls to #parse return more variables then were in your
+    // expression (residue of previous expressions).
+    record._params = {};
+    return {
+      params: [],
+      js: '',
+      tex: '',
+      fn: function() { return true; }
+    };
+  
 break;
 case 2:
+    var params = record.params();
+    var js = $$[$0-1].js;
+    var tex = $$[$0-1].tex;
+    var fn = new Function(params, "return " + js + ";");
+    record._params = {};
+    return {
+      params: params,
+      js: js,
+      tex: tex,
+      fn: fn
+    };
+  
+break;
+case 3:
     this.$ = {
       js: "(" + $$[$0-4].js + ") && (" + $$[$0-1].js + ")",
       tex: "\\left(" + $$[$0-4].tex + "\\right) \\land \\left(" + $$[$0-1].tex + "\\right)"
     };
   
 break;
-case 3:
+case 4:
     this.$ = {
       js: "(" + $$[$0-2].js + ") && " + $$[$0].js,
       tex: "\\left(" + $$[$0-2].tex + "\\right) \\land " + $$[$0].tex
     };
   
 break;
-case 4:
+case 5:
     this.$ = {
       js: "(" + $$[$0-1].js + ")",
       tex: "\\left(" + $$[$0-1].tex + "\\right)"
     };
   
 break;
-case 5:
+case 6:
     this.$ = {
       js: $$[$0-2].js + " || " + $$[$0].js,
       tex: $$[$0-2].tex + " \\lor " + $$[$0].tex
     };
   
 break;
-case 6:
+case 7:
     this.$ = {
       js: $$[$0-2].js + " && " + $$[$0].js,
       tex: $$[$0-2].tex + " \\land " + $$[$0].tex
     };
   
 break;
-case 7:
+case 8:
     this.$ = {
       js: "!" + $$[$0].js,
       tex: "\\lnot " + $$[$0].tex
     };
   
 break;
-case 8:
+case 9:
     this.$ = {
       js: $$[$0-1].js + " && " + $$[$0].js,
       tex: $$[$0-1].tex + " \\land " + $$[$0].tex
     };
   
 break;
-case 9:
+case 10:
     this.$ = $$[$0];
   
 break;
-case 10:
+case 11:
   var x = record.param($$[$0]);
   this.$ = {
     js: x,
@@ -158,8 +173,8 @@ case 10:
 break;
 }
 },
-table: [{3:1,4:2,6:[1,3],8:5,11:[1,4],12:[1,6]},{1:[3]},{5:[1,7],9:[1,8],10:[1,9]},{4:10,6:[1,3],8:5,11:[1,4],12:[1,6]},{4:11,6:[1,3],8:5,11:[1,4],12:[1,6]},{4:12,5:[2,9],6:[1,3],7:[2,9],8:5,9:[2,9],10:[2,9],11:[1,4],12:[1,6]},{5:[2,10],6:[2,10],7:[2,10],9:[2,10],10:[2,10],11:[2,10],12:[2,10]},{1:[2,1]},{4:13,6:[1,3],8:5,11:[1,4],12:[1,6]},{4:14,6:[1,3],8:5,11:[1,4],12:[1,6]},{7:[1,15],9:[1,8],10:[1,9]},{5:[2,7],7:[2,7],9:[1,8],10:[1,9]},{5:[2,8],7:[2,8],9:[1,8],10:[1,9]},{5:[2,5],7:[2,5],9:[2,5],10:[2,5]},{5:[2,6],7:[2,6],9:[1,8],10:[2,6]},{5:[2,4],6:[1,16],7:[2,4],8:17,9:[2,4],10:[2,4],12:[1,6]},{4:18,6:[1,3],8:5,11:[1,4],12:[1,6]},{5:[2,3],7:[2,3],9:[2,3],10:[2,3]},{7:[1,19],9:[1,8],10:[1,9]},{5:[2,2],7:[2,2],9:[2,2],10:[2,2]}],
-defaultActions: {7:[2,1]},
+table: [{3:1,4:[1,2],5:3,6:[1,4],8:6,11:[1,5],12:[1,7]},{1:[3]},{1:[2,1]},{4:[1,8],9:[1,9],10:[1,10]},{5:11,6:[1,4],8:6,11:[1,5],12:[1,7]},{5:12,6:[1,4],8:6,11:[1,5],12:[1,7]},{4:[2,10],5:13,6:[1,4],7:[2,10],8:6,9:[2,10],10:[2,10],11:[1,5],12:[1,7]},{4:[2,11],6:[2,11],7:[2,11],9:[2,11],10:[2,11],11:[2,11],12:[2,11]},{1:[2,2]},{5:14,6:[1,4],8:6,11:[1,5],12:[1,7]},{5:15,6:[1,4],8:6,11:[1,5],12:[1,7]},{7:[1,16],9:[1,9],10:[1,10]},{4:[2,8],7:[2,8],9:[1,9],10:[1,10]},{4:[2,9],7:[2,9],9:[1,9],10:[1,10]},{4:[2,6],7:[2,6],9:[2,6],10:[2,6]},{4:[2,7],7:[2,7],9:[1,9],10:[2,7]},{4:[2,5],6:[1,17],7:[2,5],8:18,9:[2,5],10:[2,5],12:[1,7]},{5:19,6:[1,4],8:6,11:[1,5],12:[1,7]},{4:[2,4],7:[2,4],9:[2,4],10:[2,4]},{7:[1,20],9:[1,9],10:[1,10]},{4:[2,3],7:[2,3],9:[2,3],10:[2,3]}],
+defaultActions: {2:[2,1],8:[2,2]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
