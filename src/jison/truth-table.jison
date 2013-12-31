@@ -4,13 +4,13 @@
 
 \s+ /* Ignore White Space */
 
-[a-zA-Z_][a-zA-Z0-9_]*\b return "IDENTIFIER";
-"!"                      return "!";
-"("                      return "(";
-")"                      return ")";
-"*"                      return "*";
-"+"                      return "+";
-<<EOF>>                  return "EOF";
+[a-zA-Z_][a-zA-Z0-9_]* return "IDENTIFIER";
+"!"                    return "!";
+"("                    return "(";
+")"                    return ")";
+"*"                    return "*";
+"+"                    return "+";
+<<EOF>>                return "EOF";
 
 /lex
 
