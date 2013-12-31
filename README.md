@@ -8,7 +8,7 @@ Usage
 
 ```html
 <script type="text/javascript"
-	src="http://dylon.github.com/truth-table/javascripts/v1.1/truth-table.js">
+	src="http://dylon.github.com/truth-table/javascripts/v1.2/truth-table.js">
 </script>
 ```
 
