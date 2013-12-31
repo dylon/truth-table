@@ -8,7 +8,7 @@ Usage
 
 ```html
 <script type="text/javascript"
-	src="http://dylon.github.com/truth-table/javascripts/v1.2/truth-table.js">
+	src="http://dylon.github.com/truth-table/javascripts/v1.3/truth-table.js">
 </script>
 ```
 
@@ -23,4 +23,4 @@ var fn = data.fn; // function having an arity of the number of parameters,
 var truth = fn(true, false, true); //-> true
 ```
 
-Want a demo?  [Check out my fiddle, here.](http://jsfiddle.net/dylon/Cmt7R/2/ "Truth Table Generator")
+Want a demo?  [Check out my fiddle, here.](http://jsfiddle.net/dylon/Cmt7R/3/ "Truth Table Generator")

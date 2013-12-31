@@ -15,6 +15,8 @@
 /lex
 
 %left identifier
+%right "("
+%left ")"
 %right "!"
 %left "*"
 %left "+"
@@ -52,13 +54,7 @@ statement: /* ϵ */ EOF %{
   ;
 
 expression:
-  "(" expression ")" "(" expression ")" {
-    $$ = {
-      js: "(" + $2.js + ") && (" + $5.js + ")",
-      tex: "\\left(" + $2.tex + "\\right) \\land \\left(" + $5.tex + "\\right)"
-    };
-  }
-  | "(" expression ")" identifier {
+  "(" expression ")" expression {
     $$ = {
       js: "(" + $2.js + ") && " + $4.js,
       tex: "\\left(" + $2.tex + "\\right) \\land " + $4.tex
