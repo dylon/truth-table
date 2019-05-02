@@ -23,4 +23,4 @@ var fn = data.fn; // function having an arity of the number of parameters,
 var truth = fn(true, false, true); //-> true
 ```
 
-Want a demo?  [Check out my fiddle, here.](http://jsfiddle.net/dylon/Cmt7R/4/ "Truth Table Generator")
+Want a demo?  [Check out my fiddle, here.](http://jsfiddle.net/dylon/Cmt7R/26/ "Truth Table Generator")
